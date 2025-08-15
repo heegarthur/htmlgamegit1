@@ -1,0 +1,122 @@
+let change = 0; 
+        let discoInterval;
+
+        window.onload = function() {
+            const storedUsername = localStorage.getItem('username'); 
+            if (storedUsername) {
+                document.getElementById('usernameInput').value = storedUsername; 
+            }
+
+            if (localStorage.getItem('blitzScore') !== null) {
+                score = BigInt(localStorage.getItem('blitzScore'));
+            }
+
+            if (localStorage.getItem('add') !== null) {
+                add = parseInt(localStorage.getItem('add'));
+            } else {
+                localStorage.setItem('add', add);
+            }
+
+            document.getElementById('score').innerText = 'Blitz: ' + score;
+            document.getElementById('psec').innerText = add + ' ~ ' + (score - BigInt(add) * 5n);
+        };
+
+        function saveUsername() {
+            const username = document.getElementById('usernameInput').value; 
+            localStorage.setItem('username', username); 
+        }
+
+        let score = 0n; 
+        let add = 1;
+
+        function update_add() {
+            let cost = BigInt(add) * 5n;
+            let newminscore = score - cost;
+
+            if (newminscore < 0) {
+                alert('Not enough score');
+                return;
+            }
+
+            add *= 2;
+            score -= cost; 
+
+            localStorage.setItem('add', add);
+            localStorage.setItem('blitzScore', score.toString());
+
+            document.getElementById('psec').innerText = add + ' ~ ' + (score - BigInt(add) * 5n);
+            document.getElementById('score').innerText = 'Blitz: ' + score;
+        }
+
+        function lookforcode() {
+            const ccode = document.getElementById('codes').value;
+
+            if (ccode === "reset") {
+                add = 1;
+                score = 1n;
+                localStorage.setItem('add', add);
+                localStorage.setItem('blitzScore', score.toString());
+
+                document.getElementById('score').innerText = 'Blitz: ' + score;
+                document.getElementById('psec').innerText = add + ' ~ ' + (score - BigInt(add) * 5n);
+                document.getElementById('codeswarner').innerText = "score reset";
+                return;
+            }
+
+            if (ccode === "47860346705378901234567890345789gyulwerfghuildfbhul7834r78o34r78o34r|||😭😭😩ᴀɢᴀɪɴ") {
+                let base = BigInt("99999999999");
+                let exponent1 = BigInt("9"); 
+                let icscore = base ** exponent1;
+                score = icscore+score; 
+                localStorage.setItem('blitzScore', icscore.toString());
+                document.getElementById('score').innerText = 'Blitz: ' + icscore;
+                document.getElementById('codeswarner').innerText = "INSANE score cheat";
+                return;
+            }
+
+            if (ccode === "disco") {
+                document.body.style.transition = "background-color 1000ms"
+                if (discoInterval) clearInterval(discoInterval);
+                discoInterval = setInterval(function() {
+                    const colors = ["red", "orange", "yellow", "green", "blue", "purple", "pink", "gold", "silver", "brown"];
+                    document.body.style.backgroundColor = colors[change];
+                    change = (change + 1) % colors.length;
+                }, 1000);
+                document.getElementById('codeswarner').innerText = "disco";
+                return;
+            }
+            if (ccode === "fast-disco") {
+                document.body.style.transition = "background-color 1ms"
+                if (discoInterval) clearInterval(discoInterval);
+                discoInterval = setInterval(function() {
+                    const colors = ["red", "orange", "yellow", "green", "blue", "purple", "pink", "gold", "silver", "brown"];
+                    document.body.style.backgroundColor = colors[change];
+                    change = (change + 1) % colors.length;
+                }, 1);
+                document.getElementById('codeswarner').innerText = "fast disco";
+                return;
+            }
+            if (ccode === "slow-disco"){
+                document.body.style.transition = "background-color 300000ms"
+                if (discoInterval) clearInterval(discoInterval);
+                discoInterval = setInterval(function(){
+                    const colors = ["red","orange","yeallow","green","blue"];
+                    document.body.style.backgroundColor = colors[change];
+                    change = (change +1) % colors.length;
+
+                }, 100000);
+                document.getElementById('codeswarner').innerText = "slow color change";
+                return;
+            }
+            
+
+            document.getElementById('codeswarner').innerText = "";
+        }
+
+        function updateScore() {
+            score += BigInt(add);  
+            document.getElementById('score').innerText = 'Blitz: ' + score;
+            localStorage.setItem('blitzScore', score.toString());
+        }
+
+        setInterval(updateScore, 1000);
